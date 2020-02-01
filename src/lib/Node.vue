@@ -8,9 +8,7 @@
         class="button"
         fill="#00b894"
         @click="editCandidate"
-      >
-        {{ labels.edit || "Edit" }}
-      </text>
+      >{{ labels.edit || "Edit" }}</text>
       <text
         v-if="selected"
         :x="x + 5"
@@ -21,7 +19,7 @@
         @click="toggleSelect"
       >
         {{
-          !createLinkMode ? labels.link || "Link" : labels.cancel || "Cancel"
+        !createLinkMode ? labels.link || "Link" : labels.cancel || "Cancel"
         }}
       </text>
       <text
@@ -31,9 +29,7 @@
         class="button"
         fill="orange"
         @click="copy"
-      >
-        {{ labels.copy || "Copy" }}
-      </text>
+      >{{ labels.copy || "Copy" }}</text>
       <text
         v-if="selected"
         :x="x + 65"
@@ -41,9 +37,7 @@
         class="button"
         fill="#ff7675"
         @click="remove"
-      >
-        {{ labels.remove || "Remove" }}
-      </text>
+      >{{ labels.remove || "Remove" }}</text>
       <text
         v-if="createLinkMode && !selected"
         :x="x + 5"
@@ -51,29 +45,10 @@
         class="button"
         fill="#ff7675"
         @click="commitDest"
-      >
-        {{ labels.select || "Select" }}
-      </text>
+      >{{ labels.select || "Select" }}</text>
     </g>
-    <ellipse
-      v-if="node.shape === 'ellipse'"
-      class="grab"
-      :cx="x + node.width / 2"
-      :cy="y + node.height / 2"
-      :width="node.width"
-      :height="node.height"
-      :rx="node.width / 2"
-      :ry="node.height / 2"
-      :fill="content.color || '#ecf0f1'"
-      @touchstart="mousedown"
-      @mousedown="mousedown"
-      @mousemove="mousemove"
-      @touchmove="mousemove"
-      @mouseup="mouseup"
-      @touchend="mouseup"
-    />
+
     <rect
-      v-else
       class="grab"
       :x="x"
       :y="y"
@@ -89,22 +64,37 @@
       @mouseup="mouseup"
       @touchend="mouseup"
     />
-    <a target="_blank" :href="content.url">
-      <text
-        :x="x + node.width / 2"
-        :y="y + node.height / 2"
-        fill="#34495e"
-        font-family="Meiryo UI, sans-serif"
-        font-size="20"
-        text-anchor="middle"
-      >
-        {{ content.text }}
-      </text>
-    </a>
+
+    <rect
+      class="grab"
+      fill="url(#PostActionGradient)"
+      :x="x"
+      :y="y"
+      :width="node.width"
+      :height="50"
+      rx="5"
+      ry="5"
+      @touchstart="mousedown"
+      @mousedown="mousedown"
+      @mousemove="mousemove"
+      @touchmove="mousemove"
+      @mouseup="mouseup"
+      @touchend="mouseup"
+    />
+
+    <text
+      :x="x + 15"
+      :y="y + 30"
+      fill="white"
+      font-family="Meiryo UI, sans-serif"
+      font-size="20"
+      text-anchor="left"
+    >{{ content.text }}</text>
   </g>
 </template>
 <script>
 import mouseLocation from "../mouseLocation";
+
 export default {
   mixins: [mouseLocation],
   props: {
@@ -127,6 +117,10 @@ export default {
       shape: {
         type: String,
         default: "rectangle"
+      },
+      kind: {
+        type: String,
+        default: "questions"
       }
     },
     editable: Boolean,
@@ -216,6 +210,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+text {
+  pointer-events: none;
+}
 .shadow {
   filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3));
   -webkit-filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3));
